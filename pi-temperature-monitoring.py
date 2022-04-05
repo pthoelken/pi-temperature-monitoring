@@ -53,10 +53,10 @@ str_ipaddr = str(
          [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) + ["no IP found"])[0])
 
 ## Determine uptime and last boot time
-# stream_uptime = os.popen('python -m uptime')
-# stream_boottime = os.popen('python -m uptime -b')
-# str_boottime = str(stream_boottime.read())
-# str_uptime = str(stream_uptime.read())
+stream_uptime = os.popen('uptime')
+stream_boottime = os.popen('uptime -s')
+str_boottime = str(stream_boottime.read())
+str_uptime = str(stream_uptime.read())
 
 ## Determine last installed kernel realese verion
 stream_kernelversion = os.popen('uname -a')
@@ -70,8 +70,8 @@ if flt_temp > TEMP_HIGH:
         str_mailbodypreparecirtical = ('Critical! Pi is shutting down at actual temperature of: ' + str_finaltemp +
                                        '\n\nIP Address: ' + str_ipaddr +
                                        '\nHostname: ' + str_localhostname +
-                                       # '\n\nSystem Uptime: ' + str_uptime +
-                                       # '\nBoot Time: ' + str_boottime +
+                                       '\n\nSystem Uptime: ' + str_uptime +
+                                       '\nBoot Time: ' + str_boottime +
                                        '\nKernel Version: ' + str_kernelversion
                                        )
 
@@ -79,11 +79,11 @@ if flt_temp > TEMP_HIGH:
         str_mailbody = str_mailbodypreparecirtical
     else:
 
-        str_mailbodypreparewarning = ('Warning! PoE Fan is running at actual temperature of: ' + str_finaltemp +
+        str_mailbodypreparewarning = ('Warning! The actual temperature from your RaspberryPi is: ' + str_finaltemp +
                                       '\n\nIP Address: ' + str_ipaddr +
                                       '\nHostname: ' + str_localhostname +
-                                      # '\n\nSystem Uptime: ' + str_uptime +
-                                      # '\nBoot Time: ' + str_boottime +
+                                      '\n\nSystem Uptime: ' + str_uptime +
+                                      '\nBoot Time: ' + str_boottime +
                                       '\nKernel Version: ' + str_kernelversion
                                       )
 
