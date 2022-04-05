@@ -6,11 +6,23 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 from pathlib import Path
 
-dotenv_path = Path('.env')
-dotenv_tplPath = Path('.env.tpl')
+dotenv_filePath = '.env'
+dotenv_tplPath = '.env.tpl'
 bln_critical = False
 
-if os.path.isfile(dotenv_path):
+def loadConfiguration():
+    load_dotenv(dotenv_path=dotenv_filePath)
+    MAIL_SERVER = os.getenv('ENV_MAIL_SERVER')
+    MAIL_SERVER_PORT = os.getenv('ENV_MAIL_SERVER_PORT')
+    MAIL_SERVER_USERNAME = os.getenv('ENV_MAIL_SERVER_USERNAME')
+    MAIL_SERVER_PASSWORD = os.getenv('ENV_MAIL_SERVER_PASSWORD')
+    MAIL_SENDER_ADDRESS = os.getenv('ENV_MAIL_SENDER_ADDRESS')
+    RECIPIENT_TO = os.getenv('ENV_RECIPIENT_TO')
+    RECIPIENT_CC = os.getenv('ENV_RECIPIENT_CC')
+    TEMP_HIGH = os.getenv('ENV_TEMP_HIGH')
+    TEMP_CRITICAL = os.getenv('ENV_TEMP_CRITICAL')
+
+if os.path.isfile(dotenv_filePath):
     
     CHECK_FILLED = os.getenv('ENV_CHECK_FILLED')
 
@@ -21,23 +33,10 @@ if os.path.isfile(dotenv_path):
         CHECK_FILLED as well. If you have all filled, change CHECK_FILLED to True')
         quit()
 else:
-    print (dotnet_path +  "file not found. We're convert the template from .env.tpl to .env in your application directory.\
+    print (dotenv_filePath +  "file not found. We're convert the template from .env.tpl to .env in your application directory.\
     Check out the variables and fill it with your informations. End of file and all is filled, change CHECK_FILLED to True.")
-    os.rename(dotenv_tplPath, dotenv_path)
+    os.rename(dotenv_tplPath, dotenv_filePath)
     quit()
-
-def loadConfiguration():
-    load_dotenv(dotenv_path=dotenv_path)
-    load_dotenv()
-    MAIL_SERVER = os.getenv('ENV_MAIL_SERVER')
-    MAIL_SERVER_PORT = os.getenv('ENV_MAIL_SERVER_PORT')
-    MAIL_SERVER_USERNAME = os.getenv('ENV_MAIL_SERVER_USERNAME')
-    MAIL_SERVER_PASSWORD = os.getenv('ENV_MAIL_SERVER_PASSWORD')
-    MAIL_SENDER_ADDRESS = os.getenv('ENV_MAIL_SENDER_ADDRESS')
-    RECIPIENT_TO = os.getenv('ENV_RECIPIENT_TO')
-    RECIPIENT_CC = os.getenv('ENV_RECIPIENT_CC')
-    TEMP_HIGH = os.getenv('ENV_TEMP_HIGH')
-    TEMP_CRITICAL = os.getenv('ENV_TEMP_CRITICAL')
 
 # At First we have to get the current CPU-Temperature with this defined function
 def getcputemperature():
