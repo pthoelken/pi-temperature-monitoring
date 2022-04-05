@@ -25,8 +25,9 @@ def loadConfiguration():
 if os.path.isfile(dotenv_filePath):
     
     CHECK_FILLED = os.getenv('ENV_CHECK_FILLED')
+    CORRECT_VALUE = 'True'
 
-    if CHECK_FILLED == "True":
+    if CHECK_FILLED == CORRECT_VALUE:
         loadConfiguration()
     else:
         print('Please fill out the .env file with your values and check the variable \
