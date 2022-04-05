@@ -3,26 +3,46 @@ import os
 import smtplib
 import socket
 from email.mime.text import MIMEText
+from dotenv import load_dotenv
+from pathlib import Path
 
-# Define temperatures for warnings and shutdown command
+dotenv_path = Path('.env')
+dotenv_tplPath = Path('.env.tpl')
 bln_critical = False
-int_high = 60
-int_criticalhigh = 70
 
-## Mail Server Configurations
-str_mailserver = "foobar.fqdn.com"
-int_mailserverport = 25
+if os.path.isfile(dotenv_path):
+    
+    CHECK_FILLED = os.getenv('ENV_CHECK_FILLED')
 
-str_mailsenderaddr = "alertfrompi@foobar.fqdn.com"
-str_firstreciepient = "sysadmin01@foobar.fqdn.com"
-str_secreceiepient = "sysadmin02@foobar.fqdn.com"
+    if CHECK_FILLED == "True":
+        loadConfiguration()
+    else:
+        print('Please fill out the .env file with your values and check the variable \
+        CHECK_FILLED as well. If you have all filled, change CHECK_FILLED to True')
+        quit()
+else:
+    print (dotnet_path +  "file not found. We're convert the template from .env.tpl to .env in your application directory.\
+    Check out the variables and fill it with your informations. End of file and all is filled, change CHECK_FILLED to True.")
+    os.rename(dotenv_tplPath, dotenv_path)
+    quit()
 
+def loadConfiguration():
+    load_dotenv(dotenv_path=dotenv_path)
+    load_dotenv()
+    MAIL_SERVER = os.getenv('ENV_MAIL_SERVER')
+    MAIL_SERVER_PORT = os.getenv('ENV_MAIL_SERVER_PORT')
+    MAIL_SERVER_USERNAME = os.getenv('ENV_MAIL_SERVER_USERNAME')
+    MAIL_SERVER_PASSWORD = os.getenv('ENV_MAIL_SERVER_PASSWORD')
+    MAIL_SENDER_ADDRESS = os.getenv('ENV_MAIL_SENDER_ADDRESS')
+    RECIPIENT_TO = os.getenv('ENV_RECIPIENT_TO')
+    RECIPIENT_CC = os.getenv('ENV_RECIPIENT_CC')
+    TEMP_HIGH = os.getenv('ENV_TEMP_HIGH')
+    TEMP_CRITICAL = os.getenv('ENV_TEMP_CRITICAL')
 
 # At First we have to get the current CPU-Temperature with this defined function
 def getcputemperature():
     res = os.popen('vcgencmd measure_temp').readline()
     return res.replace("temp=", "").replace("'C\n", "")
-
 
 # Convert value in float and combine the float and the string after
 flt_temp = float(getcputemperature())
@@ -46,8 +66,8 @@ stream_kernelversion = os.popen('uname -a')
 str_kernelversion = str(stream_kernelversion.read()) 
 
 # Check if the temperature is above 60°C (you can change this value, but it shouldn't be above 70)
-if flt_temp > int_high:
-    if flt_temp > int_criticalhigh:
+if flt_temp > TEMP_HIGH:
+    if flt_temp > TEMP_CRITICAL:
         bln_critical = True
 
         str_mailbodypreparecirtical = ('Critical! Pi is shutting down at actual temperature of: ' + str_finaltemp +
@@ -74,15 +94,15 @@ if flt_temp > int_high:
         str_mailbody = str_mailbodypreparewarning
 
     # Enter your smtp Server-Connection
-    obj_mailserver = smtplib.SMTP(str_mailserver, int_mailserverport)
+    obj_mailserver = smtplib.SMTP(MAIL_SERVER, MAIL_SERVER_PORT)
     obj_mailserver.ehlo()
 
     # Prepare the Message for sending the Mail
     obj_message = MIMEText(str_mailbody)
-    obj_sender = str_mailsenderaddr
-    ary_recipients = [str_firstreciepient, str_secreceiepient]
+    obj_sender = MAIL_SENDER_ADDRESS
+    ary_recipients = [RECIPIENT_TO, RECIPIENT_CC]
     obj_message['Subject'] = str_mailsubject
-    obj_message['From'] = str_mailsenderaddr
+    obj_message['From'] = MAIL_SENDER_ADDRESS
     obj_message['To'] = ", ".join(ary_recipients)
 
     # Finally send the mail
