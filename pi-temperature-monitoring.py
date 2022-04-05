@@ -1,5 +1,6 @@
 # coding=utf-8
 import os
+import sys
 import smtplib
 import socket
 from email.mime.text import MIMEText
@@ -10,13 +11,21 @@ dotenv_filePath = '.env'
 dotenv_tplPath = '.env.tpl'
 bln_critical = False
 
-if os.path.isfile(dotenv_filePath):    
-    load_dotenv(dotenv_path=dotenv_filePath)
+if getattr(sys, 'frozen', False):
+    application_path = os.path.dirname(sys.executable)
+elif __file__:
+    application_path = os.path.dirname(__file__)
+
+config_filePath = os.path.join(application_path, dotenv_filePath)
+config_tplPath = os.path.join(application_path, dotenv_tplPath)
+
+if os.path.isfile(config_filePath):    
+    load_dotenv(dotenv_path=config_filePath)
     CHECK_FILLED = os.getenv('ENV_CHECK_FILLED')
     CORRECT_VALUE = 'True'
 
     if CHECK_FILLED == CORRECT_VALUE:
-        load_dotenv(dotenv_path=dotenv_filePath)
+        load_dotenv(dotenv_path=config_filePath)
         MAIL_SERVER = os.getenv('ENV_MAIL_SERVER')
         MAIL_SERVER_PORT = (int(os.getenv('ENV_MAIL_SERVER_PORT')))
         MAIL_SERVER_USERNAME = os.getenv('ENV_MAIL_SERVER_USERNAME')
@@ -31,9 +40,9 @@ if os.path.isfile(dotenv_filePath):
         CHECK_FILLED as well. If you have all filled, change CHECK_FILLED to True')
         quit()
 else:
-    print (dotenv_filePath +  "file not found. We're convert the template from .env.tpl to .env in your application directory.\
+    print (config_filePath +  "file not found. We're convert the template from .env.tpl to .env in your application directory.\
     Check out the variables and fill it with your informations. End of file and all is filled, change CHECK_FILLED to True.")
-    os.rename(dotenv_tplPath, dotenv_filePath)
+    os.rename(config_tplPath, config_filePath)
     quit()
 
 # At First we have to get the current CPU-Temperature with this defined function
