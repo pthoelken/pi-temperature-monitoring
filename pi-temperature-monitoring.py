@@ -36,12 +36,10 @@ if os.path.isfile(config_filePath):
         TEMP_HIGH = (float(os.getenv('ENV_TEMP_HIGH')))
         TEMP_CRITICAL = (float(os.getenv('ENV_TEMP_CRITICAL')))
     else:
-        print('Please fill out the .env file with your values and check the variable \
-        CHECK_FILLED as well. If you have all filled, change CHECK_FILLED to True')
+        print('Please fill out the .env file with your values and check the variable CHECK_FILLED as well. If you have all filled, change CHECK_FILLED to True')
         quit()
 else:
-    print (config_filePath +  "file not found. We're convert the template from .env.tpl to .env in your application directory.\
-    Check out the variables and fill it with your informations. End of file and all is filled, change CHECK_FILLED to True.")
+    print (config_filePath +  "file not found. We're convert the template from .env.tpl to .env in your application directory. Check out the variables and fill it with your informations. End of file and all is filled, change CHECK_FILLED to True.")
     os.rename(config_tplPath, config_filePath)
     quit()
 
