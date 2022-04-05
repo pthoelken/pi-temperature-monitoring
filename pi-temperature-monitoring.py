@@ -18,7 +18,7 @@ if os.path.isfile(dotenv_filePath):
     if CHECK_FILLED == CORRECT_VALUE:
         load_dotenv(dotenv_path=dotenv_filePath)
         MAIL_SERVER = os.getenv('ENV_MAIL_SERVER')
-        MAIL_SERVER_PORT = os.getenv('ENV_MAIL_SERVER_PORT')
+        MAIL_SERVER_PORT = (int(os.getenv('ENV_MAIL_SERVER_PORT')))
         MAIL_SERVER_USERNAME = os.getenv('ENV_MAIL_SERVER_USERNAME')
         MAIL_SERVER_PASSWORD = os.getenv('ENV_MAIL_SERVER_PASSWORD')
         MAIL_SENDER_ADDRESS = os.getenv('ENV_MAIL_SENDER_ADDRESS')
@@ -92,6 +92,9 @@ if flt_temp > TEMP_HIGH:
 
     # Enter your smtp Server-Connection
     obj_mailserver = smtplib.SMTP(MAIL_SERVER, MAIL_SERVER_PORT)
+    obj_mailserver.connect(MAIL_SERVER, 465)
+    obj_mailserver.ehlo()
+    obj_mailserver.starttls()
     obj_mailserver.ehlo()
     obj_mailserver.login(MAIL_SERVER_USERNAME, MAIL_SERVER_PASSWORD)
 
