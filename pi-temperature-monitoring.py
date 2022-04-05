@@ -10,25 +10,22 @@ dotenv_filePath = '.env'
 dotenv_tplPath = '.env.tpl'
 bln_critical = False
 
-def loadConfiguration():
-    load_dotenv(dotenv_path=dotenv_filePath)
-    MAIL_SERVER = os.getenv('ENV_MAIL_SERVER')
-    MAIL_SERVER_PORT = os.getenv('ENV_MAIL_SERVER_PORT')
-    MAIL_SERVER_USERNAME = os.getenv('ENV_MAIL_SERVER_USERNAME')
-    MAIL_SERVER_PASSWORD = os.getenv('ENV_MAIL_SERVER_PASSWORD')
-    MAIL_SENDER_ADDRESS = os.getenv('ENV_MAIL_SENDER_ADDRESS')
-    RECIPIENT_TO = os.getenv('ENV_RECIPIENT_TO')
-    RECIPIENT_CC = os.getenv('ENV_RECIPIENT_CC')
-    TEMP_HIGH = os.getenv('ENV_TEMP_HIGH')
-    TEMP_CRITICAL = os.getenv('ENV_TEMP_CRITICAL')
-
 if os.path.isfile(dotenv_filePath):    
     load_dotenv(dotenv_path=dotenv_filePath)
     CHECK_FILLED = os.getenv('ENV_CHECK_FILLED')
     CORRECT_VALUE = 'True'
 
     if CHECK_FILLED == CORRECT_VALUE:
-        loadConfiguration()
+        load_dotenv(dotenv_path=dotenv_filePath)
+        MAIL_SERVER = os.getenv('ENV_MAIL_SERVER')
+        MAIL_SERVER_PORT = os.getenv('ENV_MAIL_SERVER_PORT')
+        MAIL_SERVER_USERNAME = os.getenv('ENV_MAIL_SERVER_USERNAME')
+        MAIL_SERVER_PASSWORD = os.getenv('ENV_MAIL_SERVER_PASSWORD')
+        MAIL_SENDER_ADDRESS = os.getenv('ENV_MAIL_SENDER_ADDRESS')
+        RECIPIENT_TO = os.getenv('ENV_RECIPIENT_TO')
+        RECIPIENT_CC = os.getenv('ENV_RECIPIENT_CC')
+        TEMP_HIGH = os.getenv('ENV_TEMP_HIGH')
+        TEMP_CRITICAL = os.getenv('ENV_TEMP_CRITICAL')
     else:
         print('Please fill out the .env file with your values and check the variable \
         CHECK_FILLED as well. If you have all filled, change CHECK_FILLED to True')
