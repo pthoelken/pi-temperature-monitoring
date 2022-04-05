@@ -22,8 +22,8 @@ def loadConfiguration():
     TEMP_HIGH = os.getenv('ENV_TEMP_HIGH')
     TEMP_CRITICAL = os.getenv('ENV_TEMP_CRITICAL')
 
-if os.path.isfile(dotenv_filePath):
-    
+if os.path.isfile(dotenv_filePath):    
+    load_dotenv(dotenv_path=dotenv_filePath)
     CHECK_FILLED = os.getenv('ENV_CHECK_FILLED')
     CORRECT_VALUE = 'True'
 
