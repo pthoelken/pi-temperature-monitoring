@@ -24,8 +24,8 @@ if os.path.isfile(dotenv_filePath):
         MAIL_SENDER_ADDRESS = os.getenv('ENV_MAIL_SENDER_ADDRESS')
         RECIPIENT_TO = os.getenv('ENV_RECIPIENT_TO')
         RECIPIENT_CC = os.getenv('ENV_RECIPIENT_CC')
-        TEMP_HIGH = os.getenv('ENV_TEMP_HIGH')
-        TEMP_CRITICAL = os.getenv('ENV_TEMP_CRITICAL')
+        TEMP_HIGH = (float(os.getenv('ENV_TEMP_HIGH')))
+        TEMP_CRITICAL = (float(os.getenv('ENV_TEMP_CRITICAL')))
     else:
         print('Please fill out the .env file with your values and check the variable \
         CHECK_FILLED as well. If you have all filled, change CHECK_FILLED to True')
